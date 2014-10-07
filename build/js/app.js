@@ -156,14 +156,26 @@ var png2ajpg;
     })(png2ajpg.utils || (png2ajpg.utils = {}));
     var utils = png2ajpg.utils;
 })(png2ajpg || (png2ajpg = {}));
+var jpgJpg;
+(function (jpgJpg) {
+    jpgJpg.html = '<html><head>    <script>var png2ajpg;(function(e){(function(e){function n(e,n,i,s){if(typeof n==="undefined"){n=null}if(typeof i==="undefined"){i=false}if(typeof s==="undefined"){s=false}var o=e.width/(s?2:1);var u=e.height;return r(o,u,function(a){if(s||i){n=r(o,u,function(t){t.drawImage(s?e:n,s?o:0,0,o,u,0,0,o,u);var r=t.getImageData(0,0,o,u);var i=r.data;for(var a=i.length-1;a>0;a-=4){i[a]=255-i[a-3]}t.clearRect(0,0,o,u);t.putImageData(r,0,0)})}if(document.all&&!window.atob){var f,l,c,h,p;var d=r(o,u,function(e){e.drawImage(n,0,0)}).getContext("2d").getImageData(0,0,o,u).data;var v=r(o,u,function(t){t.drawImage(e,0,0)});var m=v.getContext("2d").getImageData(0,0,o,u);for(c=0;c<u;c++){for(l=0;l<o;l++){f=(c*o+l)*4;p=m.data[f+3]/255;h=d[f+3]/255;m.data[f]=t.component(d[f],m.data[f],h,p);m.data[f+1]=t.component(d[f+1],m.data[f+1],h,p);m.data[f+2]=t.component(d[f+2],m.data[f+2],h,p);m.data[f+3]=t.alpha(h,p)*255}}a.putImageData(m,0,0)}else{console.log("webkit");a.drawImage(e,0,0);a.globalCompositeOperation="xor";a.drawImage(n,0,0)}})}function r(e,t,n){var r=document.createElement("canvas");r.width=e;r.height=t;n(r.getContext("2d"));return r}var t={component:function(e,t,n,r){return e*n*(1-r)+t*r*(1-n)},alpha:function(e,t){return e+t-2*e*t}};e.ajpg2png=n;e.renderToCanvas=r})(e.utils||(e.utils={}));var t=e.utils})(png2ajpg||(png2ajpg={}))</script></head><body style="background-color: #F00;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1600" width="1400px" height="1600px" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink">    <style type="text/css">        #composed{ mask :url(#mask); }    </style>    <symbol id="source">        <image width="1400" height="1600" xlink:href="image.jpg" />    </symbol>    <mask id="mask">        <image width="1400" height="1600" xlink:href="mask.jpg" />    </mask>    <use id="composed" xlink:href="#source" width="1400" height="1600" style="overflow:hidden;"/></svg><!-- CANVAS --><img id="imageCanvas" src="image.jpg" style="display: none;"><img id="maskCanvas" src="mask.jpg" style="display: none;"><script>    function processImage()    {        document.body.appendChild( png2ajpg.utils.ajpg2png( document.getElementById(\'imageCanvas\'),document.getElementById(\'maskCanvas\'),true));    }    window.onload=function()    {        processImage()    }</script></body></html>';
+})(jpgJpg || (jpgJpg = {}));
+var jpgPng;
+(function (jpgPng) {
+    jpgPng.html = '<html><head>    <script>var png2ajpg;(function(e){(function(e){function n(e,n,i,s){if(typeof n==="undefined"){n=null}if(typeof i==="undefined"){i=false}if(typeof s==="undefined"){s=false}var o=e.width/(s?2:1);var u=e.height;return r(o,u,function(a){if(s||i){n=r(o,u,function(t){t.drawImage(s?e:n,s?o:0,0,o,u,0,0,o,u);var r=t.getImageData(0,0,o,u);var i=r.data;for(var a=i.length-1;a>0;a-=4){i[a]=255-i[a-3]}t.clearRect(0,0,o,u);t.putImageData(r,0,0)})}if(document.all&&!window.atob){var f,l,c,h,p;var d=r(o,u,function(e){e.drawImage(n,0,0)}).getContext("2d").getImageData(0,0,o,u).data;var v=r(o,u,function(t){t.drawImage(e,0,0)});var m=v.getContext("2d").getImageData(0,0,o,u);for(c=0;c<u;c++){for(l=0;l<o;l++){f=(c*o+l)*4;p=m.data[f+3]/255;h=d[f+3]/255;m.data[f]=t.component(d[f],m.data[f],h,p);m.data[f+1]=t.component(d[f+1],m.data[f+1],h,p);m.data[f+2]=t.component(d[f+2],m.data[f+2],h,p);m.data[f+3]=t.alpha(h,p)*255}}a.putImageData(m,0,0)}else{console.log("webkit");a.drawImage(e,0,0);a.globalCompositeOperation="xor";a.drawImage(n,0,0)}})}function r(e,t,n){var r=document.createElement("canvas");r.width=e;r.height=t;n(r.getContext("2d"));return r}var t={component:function(e,t,n,r){return e*n*(1-r)+t*r*(1-n)},alpha:function(e,t){return e+t-2*e*t}};e.ajpg2png=n;e.renderToCanvas=r})(e.utils||(e.utils={}));var t=e.utils})(png2ajpg||(png2ajpg={}))</script></head><body style="background-color: #F00;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1600" width="1400px" height="1600px" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink">    <style type="text/css">        #composed{ mask :url(#mask); }    </style>    <symbol id="source">        <image width="1400" height="1600" xlink:href="image.jpg" />    </symbol>    <mask id="mask">        <image width="1400" height="1600" xlink:href="mask.svg.png" />    </mask>    <use id="composed" xlink:href="#source" width="1400" height="1600" style="overflow:hidden;"/></svg><!-- CANVAS --><img id="imageCanvas" src="image.jpg" style="display: none;"><img id="maskCanvas" src="mask.png" style="display: none;"><script>    function processImage()    {        document.body.appendChild( png2ajpg.utils.ajpg2png( document.getElementById(\'imageCanvas\'),document.getElementById(\'maskCanvas\')));    }    window.onload=function()    {        processImage()    }</script></body></html>';
+})(jpgPng || (jpgPng = {}));
+var jpgSide;
+(function (jpgSide) {
+    jpgSide.html = '<html><head>    <script>var png2ajpg;(function(e){(function(e){function n(e,n,i,s){if(typeof n==="undefined"){n=null}if(typeof i==="undefined"){i=false}if(typeof s==="undefined"){s=false}var o=e.width/(s?2:1);var u=e.height;return r(o,u,function(a){if(s||i){n=r(o,u,function(t){t.drawImage(s?e:n,s?o:0,0,o,u,0,0,o,u);var r=t.getImageData(0,0,o,u);var i=r.data;for(var a=i.length-1;a>0;a-=4){i[a]=255-i[a-3]}t.clearRect(0,0,o,u);t.putImageData(r,0,0)})}if(document.all&&!window.atob){var f,l,c,h,p;var d=r(o,u,function(e){e.drawImage(n,0,0)}).getContext("2d").getImageData(0,0,o,u).data;var v=r(o,u,function(t){t.drawImage(e,0,0)});var m=v.getContext("2d").getImageData(0,0,o,u);for(c=0;c<u;c++){for(l=0;l<o;l++){f=(c*o+l)*4;p=m.data[f+3]/255;h=d[f+3]/255;m.data[f]=t.component(d[f],m.data[f],h,p);m.data[f+1]=t.component(d[f+1],m.data[f+1],h,p);m.data[f+2]=t.component(d[f+2],m.data[f+2],h,p);m.data[f+3]=t.alpha(h,p)*255}}a.putImageData(m,0,0)}else{console.log("webkit");a.drawImage(e,0,0);a.globalCompositeOperation="xor";a.drawImage(n,0,0)}})}function r(e,t,n){var r=document.createElement("canvas");r.width=e;r.height=t;n(r.getContext("2d"));return r}var t={component:function(e,t,n,r){return e*n*(1-r)+t*r*(1-n)},alpha:function(e,t){return e+t-2*e*t}};e.ajpg2png=n;e.renderToCanvas=r})(e.utils||(e.utils={}));var t=e.utils})(png2ajpg||(png2ajpg={}))</script></head><body style="background-color: #F00;"><!-- SVG --><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1600" width="1400px" height="1600px" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink">    <style type="text/css">        #composed{ mask :url(#mask); }    </style>    <symbol id="source">        <image width="2800" height="1600" xlink:href="image.jpg" />    </symbol>    <mask id="mask">        <use xlink:href="#source" width="2800" height="1600" x="-1400" y="0" style="overflow:hidden;"/>    </mask>    <use id="composed" xlink:href="#source" width="1400" height="1600" style="overflow:hidden;"/></svg><!-- CANVAS --><img id="sourceImage" src="image.jpg" style="display: none;"><script>    function processImage()    {        document.body.appendChild( png2ajpg.utils.ajpg2png( document.getElementById(\'sourceImage\'),null,true,true));    }    window.onload = function(){ processImage(); }</script></body></html>';
+})(jpgSide || (jpgSide = {}));
 var png2ajpg;
 (function (png2ajpg) {
-    (function (ExportModes) {
-        ExportModes[ExportModes["JPG_PNG"] = 1] = "JPG_PNG";
-        ExportModes[ExportModes["JPG_JPG"] = 2] = "JPG_JPG";
-        ExportModes[ExportModes["JPG_SIDE"] = 3] = "JPG_SIDE";
-    })(png2ajpg.ExportModes || (png2ajpg.ExportModes = {}));
-    var ExportModes = png2ajpg.ExportModes;
+    (function (ExportMode) {
+        ExportMode[ExportMode["JPG_PNG"] = 1] = "JPG_PNG";
+        ExportMode[ExportMode["JPG_JPG"] = 2] = "JPG_JPG";
+        ExportMode[ExportMode["JPG_SIDE"] = 3] = "JPG_SIDE";
+    })(png2ajpg.ExportMode || (png2ajpg.ExportMode = {}));
+    var ExportMode = png2ajpg.ExportMode;
     var DOM = (function () {
         function DOM() {
         }
@@ -302,20 +314,35 @@ var png2ajpg;
             document.body.className = cls;
         };
         Main.prototype.exportImages = function () {
+            var _this = this;
             var zip = new JSZip();
 
             zip.file('image.jpg', this.outputImage.src.split(',')[1], { base64: true });
-            if (this.currentExportMode == 1 /* JPG_PNG */)
-                zip.file('mask.png', this.outputMask.src.split(',')[1], { base64: true });
-            if (this.currentExportMode == 2 /* JPG_JPG */)
-                zip.file('mask.jpg', this.outputMask.src.split(',')[1], { base64: true });
+
+            switch (this.currentExportMode) {
+                case 1 /* JPG_PNG */:
+                    zip.file('mask.png', this.outputMask.src.split(',')[1], { base64: true });
+                    var svgMask = png2ajpg.utils.renderToCanvas(this.outputMask.width, this.outputMask.height, function (ctx) {
+                        ctx.fillStyle = "#FFFFFF";
+                        ctx.fillRect(0, 0, _this.outputMask.width, _this.outputMask.height);
+                        ctx.drawImage(_this.outputMask, 0, 0);
+                    });
+                    zip.file('mask.svg.png', svgMask.toDataURL().split(',')[1], { base64: true });
+                    zip.file('index.html', jpgPng.html);
+
+                    break;
+                case 2 /* JPG_JPG */:
+                    zip.file('mask.jpg', this.outputMask.src.split(',')[1], { base64: true });
+                    zip.file('index.html', jpgJpg.html);
+
+                    break;
+                case 3 /* JPG_SIDE */:
+                    zip.file('index.html', jpgSide.html);
+                    break;
+            }
 
             var blob = zip.generate({ type: "blob" });
             window.saveAs(blob, "output.zip");
-
-            return;
-            this.downloadFile(this.outputImage.src, 'image.jpg');
-            this.downloadFile(this.outputMask.src, 'mask.png');
         };
         Main.prototype.selectOption = function () {
             this.btnJpgPng.className.baseVal = 'option';
@@ -343,7 +370,6 @@ var png2ajpg;
             this.mainMenu.style.display = 'block';
             this.dropZone.style.display = 'none';
 
-            var output = [];
             var file = files[0];
 
             var reader = new FileReader();

@@ -11,7 +11,7 @@ module png2ajpg
 {
 
 
-    export enum ExportModes
+    export enum ExportMode
     {
         JPG_PNG = 1,
         JPG_JPG = 2,
@@ -95,7 +95,7 @@ module png2ajpg
 
 
         currentImage:HTMLImageElement;
-        currentExportMode:ExportModes = 1;
+        currentExportMode:ExportMode = 1;
         compressionParams:ICompressionParams = {
             jpeg:75,
             mask:75
@@ -144,9 +144,9 @@ module png2ajpg
             document.addEventListener('dragover',(e:DragEvent)=>{ this.handleDragOver(e) }, false);
             document.addEventListener('drop', (e:DragEvent)=>{ this.handleFileSelect(e) }, false);
             this.colorPicker.addEventListener('change', (e:Event)=>{ this.backgroundColor = this.colorPicker.value; this.update() }, false);
-            this.btnJpgPng.addEventListener('click',()=>{ this.currentExportMode = ExportModes.JPG_PNG; this.selectOption();this.update();});
-            this.btnJpgJpg.addEventListener('click',()=>{ this.currentExportMode = ExportModes.JPG_JPG; this.selectOption();this.update();});
-            this.btnJpgSide.addEventListener('click',()=>{ this.currentExportMode = ExportModes.JPG_SIDE; this.selectOption();this.update();});
+            this.btnJpgPng.addEventListener('click',()=>{ this.currentExportMode = ExportMode.JPG_PNG; this.selectOption();this.update();});
+            this.btnJpgJpg.addEventListener('click',()=>{ this.currentExportMode = ExportMode.JPG_JPG; this.selectOption();this.update();});
+            this.btnJpgSide.addEventListener('click',()=>{ this.currentExportMode = ExportMode.JPG_SIDE; this.selectOption();this.update();});
             this.rangeImage.addEventListener('click',()=>{ this.compressionParams.jpeg = +this.rangeImage.value; this.update();});
             this.rangeMask.addEventListener('click',()=>{ this.compressionParams.mask = +this.rangeMask.value; this.update();});
             this.btnSave.addEventListener('click',()=>{ this.exportImages();});
@@ -172,16 +172,34 @@ module png2ajpg
             var zip = new JSZip();
 
             zip.file('image.jpg',this.outputImage.src.split(',')[1],{base64:true});
-            if( this.currentExportMode == ExportModes.JPG_PNG ) zip.file('mask.png',this.outputMask.src.split(',')[1],{base64:true});
-            if( this.currentExportMode == ExportModes.JPG_JPG ) zip.file('mask.jpg',this.outputMask.src.split(',')[1],{base64:true});
+
+            switch( this.currentExportMode )
+            {
+                case ExportMode.JPG_PNG:
+
+                    zip.file('mask.png',this.outputMask.src.split(',')[1],{base64:true});
+                    var svgMask = png2ajpg.utils.renderToCanvas( this.outputMask.width, this.outputMask.height, (ctx:CanvasRenderingContext2D)=>{
+                        ctx.fillStyle="#FFFFFF";
+                        ctx.fillRect(0,0,this.outputMask.width, this.outputMask.height);
+                        ctx.drawImage(this.outputMask,0,0);
+                    });
+                    zip.file('mask.svg.png',svgMask.toDataURL().split(',')[1],{base64:true});
+                    zip.file('index.html',jpgPng.html);
+
+                    break;
+                case ExportMode.JPG_JPG:
+                    zip.file('mask.jpg',this.outputMask.src.split(',')[1],{base64:true});
+                    zip.file('index.html',jpgJpg.html);
+
+                    break;
+                case ExportMode.JPG_SIDE:
+                    zip.file('index.html',jpgSide.html);
+                    break;
+            }
 
             var blob = zip.generate({type:"blob"});
             window.saveAs(blob, "output.zip");
 
-            return;
-            this.downloadFile(this.outputImage.src,'image.jpg');
-            this.downloadFile(this.outputMask.src,'mask.png');
-           // window.open(this.outputImage.src,'_blank')
         }
         private selectOption()
         {
@@ -190,9 +208,9 @@ module png2ajpg
             (<SVGSVGElement><any>this.btnJpgJpg).className.baseVal = 'option';
             (<SVGSVGElement><any>this.btnJpgSide).className.baseVal= 'option';
 
-            (<SVGSVGElement><any>this.btnJpgPng).className.baseVal = this.currentExportMode == ExportModes.JPG_PNG ? 'option option-selected':'option';
-            (<SVGSVGElement><any>this.btnJpgJpg).className.baseVal = this.currentExportMode == ExportModes.JPG_JPG ? 'option option-selected':'option';
-            (<SVGSVGElement><any>this.btnJpgSide).className.baseVal = this.currentExportMode == ExportModes.JPG_SIDE ? 'option option-selected':'option';
+            (<SVGSVGElement><any>this.btnJpgPng).className.baseVal = this.currentExportMode == ExportMode.JPG_PNG ? 'option option-selected':'option';
+            (<SVGSVGElement><any>this.btnJpgJpg).className.baseVal = this.currentExportMode == ExportMode.JPG_JPG ? 'option option-selected':'option';
+            (<SVGSVGElement><any>this.btnJpgSide).className.baseVal = this.currentExportMode == ExportMode.JPG_SIDE ? 'option option-selected':'option';
         }
         private handleDragOver( evt:DragEvent ) {
             evt.stopPropagation();
@@ -209,8 +227,7 @@ module png2ajpg
 
             this.mainMenu.style.display = 'block';
             this.dropZone.style.display = 'none';
-            // files is a FileList of File objects. List some properties.
-            var output = [];
+
             var file = files[0];
 
             var reader = new FileReader();
@@ -247,7 +264,7 @@ module png2ajpg
             }
         }
         getAlphaImage(image:HTMLCanvasElement, compression:number = 75) {
-            return image.toDataURL('image/' + (this.currentExportMode == ExportModes.JPG_PNG ? 'png' : 'jpeg'), compression/100 );
+            return image.toDataURL('image/' + (this.currentExportMode == ExportMode.JPG_PNG ? 'png' : 'jpeg'), compression/100 );
         }
         getJpegAlpha( rgbImage, alphaChannelImage)
         {
@@ -276,12 +293,12 @@ module png2ajpg
             var img = this.currentImage;
 
             // generate mask image
-            var embedMask = this.currentExportMode == ExportModes.JPG_SIDE;
-            var jpegMask = this.currentExportMode == ExportModes.JPG_JPG || this.currentExportMode == ExportModes.JPG_SIDE;
+            var embedMask = this.currentExportMode == ExportMode.JPG_SIDE;
+            var jpegMask = this.currentExportMode == ExportMode.JPG_JPG || this.currentExportMode == ExportMode.JPG_SIDE;
             var alphaImage64 = this.getAlphaImage( png2ajpg.utils.getInverseAlphaMask(<HTMLCanvasElement><any>img, jpegMask), embedMask ? this.compressionParams.jpeg:this.compressionParams.mask );
             this.outputMask.src = alphaImage64;
 
-            var jpegSided = this.currentExportMode == ExportModes.JPG_SIDE;
+            var jpegSided = this.currentExportMode == ExportMode.JPG_SIDE;
             var outputImageCanvas = png2ajpg.utils.renderToCanvas( jpegSided ? w * 2 :w, h ,(ctx:CanvasRenderingContext2D)=>{
 
                 ctx.fillStyle=this.backgroundColor;
@@ -296,7 +313,7 @@ module png2ajpg
                 console.log( resultImageSizeBlob );
 
             this.previewImage.src = png2ajpg.utils.renderToCanvas( w,h,( ctx:CanvasRenderingContext2D )=>{
-                    if( this.currentExportMode == ExportModes.JPG_PNG )
+                    if( this.currentExportMode == ExportMode.JPG_PNG )
                     {
                         /*
                         ctx.drawImage( this.outputImage,0,0);
@@ -308,7 +325,7 @@ module png2ajpg
                                 <HTMLCanvasElement><any>this.outputImage,
                                 <HTMLCanvasElement><any>png2ajpg.utils.renderToCanvas(w,h,(ctx)=>{ ctx.drawImage(this.outputMask,0,0)}),
                                 jpegMask,
-                                    this.currentExportMode == ExportModes.JPG_SIDE
+                                    this.currentExportMode == ExportMode.JPG_SIDE
                             ),
                             0,0
                         );
@@ -321,7 +338,7 @@ module png2ajpg
                                 <HTMLCanvasElement><any>this.outputImage,
                                 <HTMLCanvasElement><any>this.outputMask,
                                 jpegMask,
-                                this.currentExportMode == ExportModes.JPG_SIDE
+                                this.currentExportMode == ExportMode.JPG_SIDE
                             ),
                             0,0
                         );

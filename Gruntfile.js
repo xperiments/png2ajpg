@@ -13,6 +13,7 @@ module.exports = function (grunt) {
 						"./ts/**/*.ts"
 					],
 					reference: "./ts/reference.ts",  // If specified, generate this file that you can use for your reference management
+                    html:['./ts/templates/**/*.html'],
 					//watch: './ts',                     // If specified, watches this directory for changes, and re-runs the current target
 					out:'./build/js/app.js',
 					options: {                         // use to override the default options, http://gruntjs.com/configuring-tasks#options
